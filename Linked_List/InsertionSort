@@ -1,0 +1,153 @@
+/**
+SORT LINKED LIST USING INSERTION SORT
+Given a linked list with n nodes. Sort the linked list using insertion sort.
+
+
+Input Format:
+First line contains the number of nodes in the linked list n and then next line contains n space separated integers representing
+the node values of the linked list.
+
+Constraints:
+n < 30
+Output Format:
+Print the linked list after sorting it using insertion sort.
+
+Sample Input:
+5
+2 3 4 1 5
+Sample Output:
+1 2 3 4 5
+*/
+
+#include <iostream>
+using namespace std;
+class node
+{
+public:
+    int data ;
+    node* next;
+    node(int d)
+    {
+        data=d;
+        next=NULL;
+    }
+};
+
+void Insert(node* &Head, int i, int j)
+{
+    node* temp1;
+    node* temp2;
+    node* temp3;
+    node* head=Head;
+
+    for(int a=0;a<=j;a++)
+    {
+
+        if(a==(i-1)&&i!=0)
+        {
+            temp1=head;
+        }
+        if(a==(j))
+        {
+            temp2=head;
+        }
+        if(a==(j-1))
+        {
+            temp3=head;
+        }
+        head=head->next;
+    }
+
+    temp3->next=temp2->next;
+    if(i!=0){
+    temp2->next=temp1->next;
+    temp1->next=temp2;}
+    else{
+        temp2->next=Head;
+        Head=temp2;
+    }
+}
+
+void Insertion_Sort(node* &Head ,int N)
+{
+    node* head=Head;
+    node* temp1;
+    int C,i=0,j=0;
+    for(int a=1;a<N;a++)
+    {
+        i=0;
+        j=0;
+        C=a;
+        j=a;
+        while(C--)
+        {
+            head=head->next;
+        }
+        temp1=head;
+        head=Head;
+        C=j;
+        while(C--)
+        {
+            if((head->data)>(temp1->data))
+            {
+                Insert(Head,i,j);
+                break;
+            }
+            head=head->next;
+            i++;
+        }
+        head=Head;
+    }
+
+
+
+}
+
+
+
+
+
+void Insert_after(node* &head,int d)
+{
+    node* temp=new node(d);
+    if(head==NULL)
+    {
+        head=temp;
+        return;
+    }
+    node* last_Node=head;
+    while(last_Node->next!=NULL)
+    {
+        last_Node=last_Node->next;
+    }
+    last_Node->next=temp;
+    return;
+}
+
+void PrintLL(node* head)
+{
+    while(head!=NULL)
+    {
+        cout<<head->data<<" ";
+        head=head->next;
+    }
+}
+
+
+
+
+int main()
+{
+    node* head=NULL;
+    int V,N,n;
+    cin>>N;
+    n=N;
+    while(N--)
+    {
+       cin>>V;
+       Insert_after(head,V);
+    }
+    Insertion_Sort(head,n);
+    PrintLL(head);
+    return 0;
+}
