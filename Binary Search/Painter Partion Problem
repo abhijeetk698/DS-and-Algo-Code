@@ -1,0 +1,83 @@
+/**
+PAINTER'S PARTITION PROBLEM
+Given K painters to paint N boards where each painter takes 1 unit of time to paint 1 unit of boards i.e. if the length of a
+particular board is 5, it will take 5 units of time to paint the board. Compute the minimum amount of time to paint all the
+boards.
+
+Note that:
+
+Every painter can paint only contiguous segments of boards.
+A board can only be painted by 1 painter at maximum.
+
+Input Format:
+Every test file consists of 3 lines. First line contains K which is the number of painters. Second line contains N which
+indicates the number of boards. Third line contains N space separated integers representing the length of each board.
+
+Constraints:
+1 <= K <= 10
+1 <= N <= 10
+1<= Length Of Each Board <= 10^8
+Output Format:
+Output the minimum time required to paint the board.
+
+Sample Input:
+2
+2
+1 10
+Sample Output:
+10
+
+*/
+
+#include <iostream>
+
+using namespace std;
+#define ll long long
+/// This function tells us whether is it possible to paint the board in given time
+bool IsPossible(int* arr,int K,int N,int time)
+{
+    int Sum=0;
+    int Painter=1;
+    for(int i=0;i<N;i++)
+    {
+        if(arr[i]>time){return false;}
+        if((Sum+arr[i])>time)
+        {
+            Painter++;
+            Sum=0;
+            if(Painter>K){return false;}
+        }
+        Sum+=arr[i];
+    }
+    return true;
+}
+
+int MinTime(int* arr,int K,int N,ll int s,ll int e)
+{
+    if(s==e){return s;}
+    int mid=(s+e)/2;
+    if(IsPossible(arr,K,N,mid))
+    {
+        return MinTime(arr,K,N,s,mid);
+    }
+    else
+    {
+        return MinTime(arr,K,N,mid+1,e);
+    }
+}
+
+int main()
+{
+        ll int Sum=0;
+        int K,N;
+        cin>>K>>N;
+        int board[N];
+        for(int i=0;i<N;i++)
+        {
+            cin>>board[i];
+            Sum+=board[i];
+        }
+        cout<<MinTime(board,K,N,0,Sum)<<endl;
+
+    return 0;
+}
