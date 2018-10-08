@@ -1,0 +1,85 @@
+/**
+AGGRESSIVE COWS
+Farmer John has built a new long barn, with N (2 <= N <= 100,000) stalls. The stalls are located along a straight line at
+positions x1,…,xN (0 <= xi <= 1,000,000,000).
+
+His C (2 <= C <= N) cows don't like this barn layout and become aggressive towards each other once put into a stall. To prevent
+the cows from hurting each other, FJ wants to assign the cows to the stalls, such that the minimum distance between any two of
+them is as large as possible. What is the largest minimum distance?
+
+
+Input Format:
+First line contains N and C, separated by a single space, representing the total number of stalls and number of cows respective
+-ly. The next line contains N integers containing the indexes of stalls.
+
+Output Format:
+Print one integer: the largest minimum distance.
+
+Sample Input:
+5 3
+1 2 8 4 9
+Sample Output:
+3
+
+*/
+
+
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+#define ll long long
+
+bool IsPossible(ll int* arr,int N,int C,int K)
+{
+    int Cow=1;
+    int prev=arr[0];
+    for(int i=1;i<N;i++)
+    {
+        if((arr[i]-prev)>=K)
+        {
+            Cow++;
+            prev=arr[i];
+            if(Cow>=K){return true;}
+        }
+    }
+    return false;
+}
+
+int MinDistance(ll int* arr,int N,int C,int s,int e)
+{
+    int mid=(e+s)/2;
+    if(s>=e)
+    {
+        return mid;
+    }
+    if((e-s)==1)
+    {
+        return (IsPossible(arr,N,C,e)?e:s);
+    }
+    if(IsPossible(arr,N,C,mid))
+    {
+        return MinDistance(arr,N,C,mid,e);
+    }
+    else{
+        return MinDistance(arr,N,C,s,mid);
+    }
+}
+
+int main()
+{
+    int T;
+    cin>>T;
+    while(T--){
+    int N,C;
+    cin>>N>>C;
+    ll int Stall_Index[N];
+    for(int i=0;i<N;i++)
+    {
+        cin>>Stall_Index[i];
+    }
+    sort(Stall_Index,Stall_Index+N);
+    cout<<MinDistance(Stall_Index,N,C,1,Stall_Index[N-1]-Stall_Index[0])<<endl;
+    }
+    return 0;
+}
