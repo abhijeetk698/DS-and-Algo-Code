@@ -1,0 +1,153 @@
+/**
+BOOK ALLOCATION PROBLEM
+You are given number of pages in n different books and m students. The books are arranged in ascending order of number of pages
+.Every student is assigned to read some consecutive books. The task is to assign books in such a way that the maximum number
+of pages assigned to a student is minimum.
+
+
+Input Format:
+First line contains integer t as number of test cases. Next t lines contains two lines. For each test case, 1st line contains
+two integers n and m which represents the number of books and students and 2nd line contains n space separated integers which
+represents the number of pages of n books in ascending order.
+
+Constraints:
+1 < t < 50
+1< n < 100
+1< m <= 50
+Output Format:
+Print the maximum number of pages assigned to students. (see input and output format)
+
+Sample Input:
+1
+4 2
+12 34 67 90
+Sample Output:
+113
+Explanation:
+1st students : 12 , 34, 67 (total = 113) 2nd students : 90 (total = 90) Print max(113, 90)
+
+*/
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+bool Isfeasible(int* arr,int n ,int m,int K)
+{
+    int student=1;
+    int CountPages=0;
+    for(int i=0;i<n;i++)
+    {
+        if(CountPages+arr[i]>K)
+        {
+            CountPages=arr[i];
+            student++;
+            if(student>m){return false;}
+        }
+        else
+        {
+            CountPages+=arr[i];
+        }
+    }
+    return true;
+}
+
+int MaxAllocation(int* arr,int s,int e,int m,int n)
+{
+
+    if(s==e){return s;}
+    int mid=(s+e)/2;
+    if(Isfeasible(arr,n,m,mid))
+    {
+        return MaxAllocation(arr,s,mid,m,n);
+    }
+    else
+    {
+        return MaxAllocation(arr,mid+1,e,m,n);
+    }
+}
+
+int main()
+{
+    int T;
+    cin>>T;
+    while(T--)
+    {
+        int n,m;
+        long long int Sum=0;
+        cin>>n>>m;
+        int arr[n];
+        for(int i=0;i<n;i++)
+        {
+            cin>>arr[i];
+            Sum+=arr[i];
+        }
+
+        cout<<MaxAllocation(arr,arr[n-1],Sum,m,n)<<endl;
+    }
+    return 0;
+}
+/**
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+#define ll long long
+bool Isfeasible(int* arr,int n ,int m,int K)
+{
+    int student=1;
+    int CountPages=0;
+    for(int i=0;i<n;i++)
+    {
+        if(CountPages+arr[i]>K)
+        {
+            CountPages=arr[i];
+            student++;
+            if(student>m){return false;}
+        }
+        else
+        {
+            CountPages+=arr[i];
+        }
+    }
+    return true;
+}
+
+ll int MaxAllocation(int* arr,int m,int n)
+{
+    ll int Sum=0;
+    for(int i=0;i<n;i++)
+    {
+        Sum+=arr[i];
+    }
+    ll int s=arr[n-1],e=Sum,Ans,mid;
+    while(e>=s)
+    {
+        mid=(s+e)/2;
+        if(Isfeasible(arr,n,m,mid))
+        {
+            Ans=mid;
+            e=mid-1;
+        }
+        else
+        {
+            s=mid+1;
+        }
+    }
+    return Ans;
+}
+
+int main()
+{
+        int n,m;
+        cin>>n>>m;
+        int arr[n];
+        for(int i=0;i<n;i++)
+        {
+            cin>>arr[i];
+        }
+        sort(arr,arr+n);
+        cout<<MaxAllocation(arr,m,n)<<endl;
+
+    return 0;
+}
+*/
